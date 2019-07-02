@@ -4,8 +4,6 @@
 
 page_width <- 178
 page_height <- 234
-
-#theme_set(theme_linedraw(base_size=12))
 set.seed(111231)
 lbr <- scales::trans_breaks("log10", function(x) 10^x)
 llb <- scales::trans_format("log10", scales::math_format(10^.x))
@@ -107,25 +105,12 @@ md <- dres %>%
   group_by(time, ztext) %>% 
   summarise(m=mean(y), s=sd(y), n=n(), se=s/sqrt(n))
 
-# ggplot() +
-#   theme(legend.position = c(0.8,0.15), legend.background=element_blank()) +
-#   geom_line(data=dres, aes(x=time, y=y, group=id, colour=factor(ztext)), alpha=0.35) +
-#   geom_point(data=md, aes(x=time, y=m, colour=factor(ztext)), size=2.5) +
-#   geom_line(data=md, aes(x=time, y=m, colour=factor(ztext)), size=1) +
-#   scale_y_continuous(limits= c(min(dres$y)-2.5, max(dres$y))) +
-#   scale_colour_brewer(palette="Dark2", name="") +
-#   labs(x="Week", y="Outcome",
-#        title="Longitudinal individual outcomes with group means") +
-#   paper_theme() +
-#   theme(panel.border=element_rect(color="grey", fill = NA, size=0.25))
-#
-# ggsave(file=paste0(fig_path, "403_c.png"), width = d_width, height = d_height, units = "mm", dpi = d_dpi)
 
 ggplot() + 
   theme(legend.position = c(0.8,0.65), legend.background=element_blank()) +
   geom_line(data=dres, aes(x=time, y=y, group=id, colour=factor(ztext)), alpha=0.35) +
-  geom_line(data=md, aes(x=time, y=m, colour=factor(ztext)), size=1) + #, position=position_dodge(0.3)) + 
-  geom_point(data=md, aes(x=time, y=m, ymin=m-s, ymax=m+s, colour=ztext)) +#, position=position_dodge(0.3)) +
+  geom_line(data=md, aes(x=time, y=m, colour=factor(ztext)), size=1) +
+  geom_point(data=md, aes(x=time, y=m, ymin=m-s, ymax=m+s, colour=ztext)) +
   scale_y_continuous(limits= c(min(dres$y)-2.5, max(dres$y))) +
   scale_colour_brewer(palette="Dark2", name="") +
   labs(x="Week", y="Outcome", 
@@ -143,22 +128,6 @@ ggsave(file=paste0(fig_path, "403_c.png"),
        width = 0.5*page_width, height = 0.3*page_height,  
        units = "mm", dpi = d_dpi)
 
-##############################################################################
-## 
-##############################################################################
-# 
-# 
-# ggplot(md, aes(x=time, y=m, ymin=m-s, ymax=m+s, colour=ztext)) + 
-#   geom_pointrange(position=position_dodge(0.3)) + 
-#   geom_line(stat="smooth", method="lm", position=position_dodge(0.3), se=FALSE, alpha=0.35) + 
-#   scale_y_continuous(limits=c(min(md$m-md$s)-1, max(md$m+md$s))) +
-#   scale_colour_brewer(palette="Dark2", name="") + 
-#   paper_theme() + 
-#   theme(legend.position = c(0.2,0.15), legend.background=element_blank()) +
-#   theme(panel.border=element_rect(color="grey", fill = NA, size=0.25)) +
-#   labs(x="Week", y="Mean outcome (SD)", title="Longitudinal group means with SD")
-# 
-# ggsave(file=paste0(fig_path, "403_d.png"), width = d_width, height = d_height, units = "mm", dpi = d_dpi)
 
 ##############################################################################
 ## Model fit to longtiduinal data
@@ -189,7 +158,6 @@ nd <- bind_rows(nd1, nd2) %>%
 prs <- c(0.05,0.5,0.95)
 
 ppnd <- nd %>% select(id, time, z) %>%
-#bind_cols(as_tibble(t(posterior_predict(mod, newdata=nd, re.form=~0)))) %>% 
   bind_cols(as_tibble(t(posterior_linpred(mod, newdata=nd, re.form=~0)))) %>%
   gather(4:1003, key="ppid", value="ypred") %>%
   spread(z, ypred) %>% 

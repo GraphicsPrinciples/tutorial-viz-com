@@ -1,3 +1,7 @@
+####################################################################
+# Pre-attentive processing example highlighting bars using colour
+####################################################################
+
 my_data <- data.frame(
   Group = c("A", "B", "C", "D","E", "F"),
   perc = c(0.02, 0.05, 0.1, 0.2, 0.25, 0.38),
@@ -13,7 +17,6 @@ f2c <- my_data %>%
   geom_bar(aes(x = Group, y = perc), 
            fill= "grey69", width=0.7, stat = "identity", alpha = 0.8) +
   scale_y_continuous(breaks=c(0, 5, 10)) + 
- # geom_hline(yintercept = 0, colour = "wheat4", linetype=1, size=1) + 
   coord_flip() +
   theme(legend.position="none",
         panel.grid.minor.x = element_blank(),

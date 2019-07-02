@@ -6,7 +6,6 @@ page_width <- 178
 page_height <- 234
 
 
-
 # Read in data and define order for factors.
 # Dervie visit time in weeks from hours
 # Define informative label for plotting subgroups
@@ -72,9 +71,6 @@ ggsave(file=paste0(fig_path, "404_a.png"),
 ggsave(file=paste0(fig_path, "404_a.pdf"), 
        width = 0.5*page_width, height = 0.25*page_height, units = "mm",  
        dpi = 1000, device = cairo_pdf)
-
-
-
 
 
 ##############################################################################
@@ -143,7 +139,6 @@ ggsave(file=paste0(fig_path, "404_c.pdf"),
        dpi = 1000, device = cairo_pdf)
 
 
-
 ##############################################################################
 ## Treatment difference by subgroup
 ##############################################################################
@@ -192,7 +187,6 @@ emm1df <- as.data.frame(ests) %>%
   )
 
 
-
 ## Take out the baseline visit
 emm1df %>%
   filter(contrasts.Visit != 101) %>% 
@@ -214,7 +208,6 @@ emm1df %>%
        linetype = "Genetic marker") 
 
 
-
 ggsave(file=paste0(fig_path, "404_d.png"), 
        width = 0.5*page_width, height = 0.25*page_height, 
        units = "mm", dpi = d_dpi)
@@ -223,7 +216,6 @@ ggsave(file=paste0(fig_path, "404_d.png"),
 ggsave(file=paste0(fig_path, "404_d.pdf"), 
        width = 0.5*page_width, height = 0.25*page_height, units = "mm",
        dpi = 1000, device = cairo_pdf)
-
 
 
 ##############################################################################
@@ -263,9 +255,6 @@ emm1df %>%
   theme(axis.text.y=element_text(size=7)) +
   theme(axis.title.x=element_text(size=8, vjust=0)) +
   theme(axis.title.y=element_text(size=8, vjust=1.25))
-
-
-
 
 
 ggsave(file = paste0(fig_path, "404_e.png"), 
