@@ -182,28 +182,29 @@ PKmetrics$var <- factor(PKmetrics$var, levels = c("AUClast","Ctrough","Cmax"))
 
 PKmetrics %>%
   ggplot(aes(x = var, y = ymean, ymin = y2.5, ymax = y97.5)) + 
-  paper_theme() +
-  geom_hline(yintercept = 1, size = 1, colour = "red", alpha = 0.1) + 
+  geom_hline(yintercept = 1, size = 1.1, colour = "red", alpha = 0.4) + 
   scale_y_log10(breaks = c(0.25,0.5,1,2,4)) + 
-  geom_point() + 
-  geom_errorbar(width = 0) + 
+  geom_point(size = 3, alpha = 0.6) + 
+  geom_errorbar(width = 0, size = 1, alpha = 0.6) + 
   labs(x = "", 
        y = "Ratios between Japanese and Caucasian Mean (95% CI)", 
        title = "Exposure differs by ethnicity") +
   scale_x_discrete(breaks = NULL, labels = NULL) + 
-  geom_text(aes(x = var, y = 0.175, label = paste0(var,"\n(",unit,")" ) )) +
+  geom_text(aes(x = var, y = 0.175, label = paste0(var,"\n(",unit,")" ) ), size = 6) +
   coord_flip(ylim=c(0.15,5)) +
+  theme_light(base_size = 20) +
   theme(
     panel.grid.major.x = element_line(color = "gray", size = 0.2), 
+    panel.grid.minor.x = element_blank(), 
     panel.grid.major.y = element_blank(), 
-    panel.border = element_blank(),
-    axis.title.x=element_text(size=10, hjust=0.5),
-    axis.title.y = element_blank(),
-    plot.title = element_text(size = 12, hjust = 0.5)
+#    panel.border = element_blank()
+#    axis.title.x=element_text(size=10, hjust=0.5),
+#    axis.title.y = element_blank(),
+#    plot.title = element_text(size = 12, hjust = 0.5)
   ) 
 
 ggsave(file=paste0(fig_path, "402_d.png"), 
-       width = 1*page_width, height = 0.3*page_height,
+       width = 300, height = 150,
        units = "mm", dpi = d_dpi)
 
 
